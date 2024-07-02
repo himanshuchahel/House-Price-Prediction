@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <!-- Add your CSS styles or include external stylesheets here -->
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #loader{
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: black;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffff;
+            gap: 10px;
+        }  
+        #loader h3{
+            font-size: 2vw;
+        }
+
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Add styling for the form */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Style for displaying the predicted price */
+        #predictedPrice {
+            height: 400px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <h3>HOUSE</h3>
+        <h3>PRICE</h3>
+        <h3>PREDICTION</h3>
+        <h3>MODEL!</h3>    
+    </div>
+
+    <header>
+        <h1>House Price Prediction</h1>
+    </header>
+    <main>
+        <p>Welcome to House Price Prediction Model!</p>
+        <p>Here 1 stands for Yes and 0 is for No.</p>
+        
+        <!-- Form for input fields -->
+        
+<form id="predictionForm">
+    <label for="area">Area:</label>
+    <select id="area" name="area">
+        <option value="" disabled selected>Select the area (in sqft)</option>
+        {% for areas in area %}
+            <option value="{{ areas }}">{{ areas }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="bedrooms">Bedrooms:</label>
+    <select id="bedrooms" name="bedrooms">
+        <option value="" disabled selected>Select number of bedrooms</option>
+        {% for bedroom in bedrooms %}
+            <option value="{{ bedroom }}">{{ bedroom }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="bathrooms">Bathrooms:</label>
+    <select id="bathrooms" name="bathrooms">
+        <option value="" disabled selected>Select number of bathrooms</option>
+        {% for bathroom in bathrooms %}
+            <option value="{{ bathroom }}">{{ bathroom }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="stories">Stories:</label>
+    <select id="stories" name="stories">
+        <option value="" disabled selected>Select number of the stories</option>
+        {% for store in stories %}
+            <option value="{{ store }}">{{ store }} sqft</option>
+        {% endfor %}
+    </select>
+
+    <label for="mainroad">Mainroad:</label>
+    <select id="mainroad" name="mainroad">
+        <option value="" disabled selected>Select number of mainroads</option>
+        {% for mainroads in mainroad %}
+            <option value="{{ mainroads }}">{{ mainroads }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="guestroom">Guestroom:</label>
+    <select id="guestroom" name="guestroom">
+        <option value="" disabled selected>Select number of Guestrooms</option>
+        {% for guestrooms in guestroom %}
+            <option value="{{ guestrooms }}">{{ guestrooms }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="basement">Basement:</label>
+    <select id="basement" name="basement">
+        <option value="" disabled selected>Select number of Basements</option>
+        {% for basements in basement %}
+            <option value="{{ basements }}">{{ basements }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="hotwaterheating">Hot water heating:</label>
+    <select id="hotwaterheating" name="hotwaterheating">
+        <option value="" disabled selected>Select Hot Water Heating</option>
+        {% for hotwaterheatings in hotwaterheating %}
+            <option value="{{ hotwaterheatings }}">{{ hotwaterheatings }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="airconditioning">Airconditioning:</label>
+    <select id="airconditioning" name="airconditioning">
+        <option value="" disabled selected>Select Airconditioning</option>
+        {% for airconditionings in airconditioning %}
+            <option value="{{ airconditionings }}">{{ airconditionings }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="parking">Parking</label>
+    <select id="parking" name="parking">
+        <option value="" disabled selected>Select Parking</option>
+        {% for parkings in parking %}
+            <option value="{{ parkings }}">{{ parkings }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="prefarea">Prefarea:</label>
+    <select id="prefarea" name="prefarea">
+        <option value="" disabled selected>Select number of Perfarea</option>
+        {% for prefareas in prefarea %}
+            <option value="{{ prefareas }}">{{ prefareas }}</option>
+        {% endfor %}
+    </select>
+
+
+
+    <!-- Predict Price button -->
+    <button type="button" onclick="sendData()">Predict Price</button>
+
+    <!-- Space for displaying predicted price -->
+    <div id="predictedPrice"></div>
+</form>
+
+    </main>
+    <footer>
+        <p>&copy; 2024 House Price Prediction. All rights reserved.</p>
+    </footer>
+    <!-- Add your JavaScript scripts or include external scripts here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // JavaScript function to fetch options for dropdowns
+        function fetchOptions(endpoint, dropdownId) {
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    const dropdown = document.getElementById(dropdownId);
+                    dropdown.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                    data.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        dropdown.appendChild(optionElement);
+                    });
+                });
+        }
+
+        // Fetch options for each dropdown on page load
+        window.onload = function() {
+            fetchOptions('/area','area')
+            fetchOptions('/bedrooms','bedrooms')
+            fetchOptions('/bathrooms','bathrooms')
+            fetchOptions('/stories','stories')
+            fetchOptions('/mainroad','mainroad')
+            fetchOptions('/guestroom','guestroom')
+            fetchOptions('/basement','basement')
+            fetchOptions('/hotwaterheating','hotwaterheating')
+            fetchOptions('/airconditioning','airconditioning')
+            fetchOptions('/parking','parking')
+            fetchOptions('/prefarea','prefarea')   
+        };
+        // JavaScript function to send data and receive predicted price
+        function sendData() {
+            const form = document.getElementById('predictionForm');
+            const formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(price => {
+                document.getElementById("predictedPrice").innerHTML = "Price: INR " + price;
+            });
+            
+        }
+            var t1 = gsap.timeline()
+    t1.from("#loader h3",{
+      x:40,
+      opacity:0,
+      duration:1,
+      stagger:0.1,
+    })
+    t1.to("#loader h3",{
+      x:-40,
+      opacity:0,
+      duration:1,
+      stagger:0.1,
+    })
+    t1.to("#loader",{
+      opacity:0,
+    })
+    t1.to("#loader",{
+      display:"none",
+    })
+    </script>
+
+</body>
+</html>
